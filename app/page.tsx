@@ -1,8 +1,9 @@
 "use client";
 
 import SearchBar from "@/components/SearchBar";
+import { Button } from "@/components/ui/button"; // Shadcn Button
 import { supabase } from "@/utils/supabase/client";
-import { Plus } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -19,6 +20,7 @@ export default function Home() {
   const [searchPerformed, setSearchPerformed] = useState(false);
   const router = useRouter();
 
+  // ✅ Search for posts by title, content, or keywords
   const handleSearch = async (query: string) => {
     setSearchPerformed(true);
 
@@ -52,24 +54,48 @@ export default function Home() {
     }
   };
 
+  // ✅ Navigate to the create-post page
   const handleCreatePost = () => {
     router.push("/create-post");
   };
 
+  // ✅ Navigate to post details page
   const handleViewPost = (id: string) => {
     router.push(`/post/${id}`);
   };
 
+  // ✅ Sign out and redirect to login
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error);
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 relative">
-      {/* Plus Button */}
-      <button
+      {/* Plus Button (Shadcn) */}
+      <Button
         onClick={handleCreatePost}
-        className="absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
+        className="absolute top-4 right-16 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
         aria-label="Create New Post"
+        size="icon"
       >
         <Plus size={24} />
-      </button>
+      </Button>
+
+      {/* Sign Out Button (Shadcn) */}
+      <Button
+        onClick={handleSignOut}
+        className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow"
+        aria-label="Sign Out"
+        size="icon"
+        variant="destructive"
+      >
+        <LogOut size={24} />
+      </Button>
 
       <h1 className="text-4xl font-bold mb-6">Mini-Wiki</h1>
       <SearchBar onSearch={handleSearch} />
