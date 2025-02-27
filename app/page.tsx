@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
+import { signOut } from "@/app/actions";
 import SearchBar from "@/components/SearchBar";
-import { Button } from "@/components/ui/button"; // Shadcn Button
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/utils/supabase/client";
 import { LogOut, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 interface Post {
   id: string;
@@ -18,9 +19,9 @@ interface Post {
 export default function Home() {
   const [results, setResults] = useState<Post[]>([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  // ✅ Search for posts by title, content, or keywords
   const handleSearch = async (query: string) => {
     setSearchPerformed(true);
 
@@ -54,29 +55,22 @@ export default function Home() {
     }
   };
 
-  // ✅ Navigate to the create-post page
   const handleCreatePost = () => {
     router.push("/create-post");
   };
 
-  // ✅ Navigate to post details page
   const handleViewPost = (id: string) => {
     router.push(`/post/${id}`);
   };
 
-  // ✅ Sign out and redirect to login
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Error signing out:", error);
-    } else {
-      router.push("/login");
-    }
+  const handleSignOut = () => {
+    startTransition(() => {
+      signOut();
+    });
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 relative">
-      {/* Plus Button (Shadcn) */}
       <Button
         onClick={handleCreatePost}
         className="absolute top-4 right-16 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow"
@@ -86,13 +80,13 @@ export default function Home() {
         <Plus size={24} />
       </Button>
 
-      {/* Sign Out Button (Shadcn) */}
       <Button
         onClick={handleSignOut}
         className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow"
         aria-label="Sign Out"
         size="icon"
         variant="destructive"
+        disabled={isPending}
       >
         <LogOut size={24} />
       </Button>

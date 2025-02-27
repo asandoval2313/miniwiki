@@ -33,7 +33,6 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/signup') &&
     !request.nextUrl.pathname.startsWith('/auth')
   ) {
-    console.log(user, request.nextUrl.pathname)
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);

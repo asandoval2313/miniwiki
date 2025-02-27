@@ -1,67 +1,102 @@
 'use client';
 
-import { supabase } from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useActionState } from 'react';
+import { signup } from './actions';
 
 export default function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      alert('Check your email for the confirmation link!');
-      router.push('/login');
-    }
-  };
+  // ✅ Initial state for form errors
+  const initialState = { error: null };
+  const [state, formAction] = useActionState(signup, initialState);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <form onSubmit={handleSignUp} className="space-y-4">
+      <form
+        action={formAction}
+        className="bg-white shadow-lg rounded-lg p-8 w-full max-w-sm space-y-6"
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-800">Sign Up</h2>
+
+        {/* Error Display */}
+        {state?.error && (
+          <p className="text-red-500 text-sm text-center">{state.error}</p>
+        )}
+
+        {/* First Name */}
+        <div>
+          <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
+            First Name
+          </label>
           <input
+            id="first_name"
+            name="first_name"
+            type="text"
+            required
+            className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            placeholder="John"
+          />
+        </div>
+
+        {/* Last Name */}
+        <div>
+          <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
+            Last Name
+          </label>
+          <input
+            id="last_name"
+            name="last_name"
+            type="text"
+            required
+            className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            placeholder="Doe"
+          />
+        </div>
+
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
             type="email"
-            placeholder="Email"
             required
-            className="w-full p-2 border rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            placeholder="you@example.com"
           />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Password
+          </label>
           <input
+            id="password"
+            name="password"
             type="password"
-            placeholder="Password"
             required
-            className="w-full p-2 border rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            placeholder="••••••••"
           />
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
-          >
-            Sign Up
-          </button>
-        </form>
-        <p className="text-sm text-center mt-4">
+        </div>
+
+        {/* ✅ Submit Button */}
+        <button
+          type="submit"
+          className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
+          Sign Up
+        </button>
+
+        {/* Link to Sign In */}
+        <p className="text-sm text-center mt-4 text-gray-600">
           Already have an account?{' '}
-          <a href="/signin" className="text-blue-500 hover:underline">
+          <a href="/login" className="text-blue-500 hover:underline">
             Sign In
           </a>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

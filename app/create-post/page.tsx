@@ -35,6 +35,11 @@ export default function CreatePost() {
     }
   };
 
+  // ✅ Handle Cancel: Navigate back to the main page
+  const handleCancel = () => {
+    router.push("/");
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
       <h1 className="text-4xl font-bold mb-6">Create a New Post</h1>
@@ -42,7 +47,6 @@ export default function CreatePost() {
         onSubmit={handleSubmit}
         className="w-full max-w-xl bg-white p-6 rounded-lg shadow-md space-y-4"
       >
-        {/* Post Title */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Post Title
@@ -56,7 +60,6 @@ export default function CreatePost() {
           />
         </div>
 
-        {/* Post Content */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Post Content
@@ -70,7 +73,6 @@ export default function CreatePost() {
           />
         </div>
 
-        {/* Keywords */}
         <div>
           <label className="block text-sm font-medium text-gray-700">
             Keywords (comma-separated)
@@ -84,10 +86,20 @@ export default function CreatePost() {
           />
         </div>
 
-        {/* Submit Button */}
-        <Button type="submit" className="w-full">
-          Create Post
-        </Button>
+        <div className="flex justify-between space-x-4">
+          <Button type="submit" className="w-full">
+            Create Post
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
     </div>
   );
