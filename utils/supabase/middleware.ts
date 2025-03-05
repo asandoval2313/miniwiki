@@ -15,18 +15,21 @@ export async function updateSession(request: NextRequest) {
         }
     })
 
-    // Get user session
     const {
         data: { user }
     } = await supabase.auth.getUser()
 
-    // Redirect unauthenticated users (excluding /login and /signup routes)
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/signup') &&
-        !request.nextUrl.pathname.startsWith('/auth')
-    ) {
+    const isAuthPage =
+        request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup') || request.nextUrl.pathname.startsWith('/auth')
+    console.log(user, isAuthPage, request.nextUrl.pathname)
+
+    if (user && isAuthPage) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/'
+        return NextResponse.redirect(url)
+    }
+
+    if (!user && !isAuthPage) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)
