@@ -1,19 +1,26 @@
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/supabase/server'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface PostPageProps {
-    params: { id: string }
+    params: Promise<{ id: string }>
+}
+
+async function fetchPost(postId: string) {
+    const supabase = await createClient()
+    const { data: post, error } = await supabase.from('posts').select('*, profiles(first_name, last_name)').eq('id', postId).single()
+
+    if (error || !post) return null
+    return post
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-    const supabase = createClient()
-    const postId = params.id
+    const { id } = await params
 
-    const { data: post, error } = await supabase.from('posts').select('*, profiles(first_name, last_name)').eq('id', postId).single()
+    const post = await fetchPost(id)
 
-    if (error || !post) {
+    if (!post) {
         return notFound()
     }
 
