@@ -1,30 +1,27 @@
-'use server';
+'use server'
 
-import { createClient } from '@/utils/supabase/server';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 type LoginState = {
-  error: string | null;
-};
+    error: string | null
+}
 
-export async function login(
-  state: LoginState,
-  formData: FormData
-): Promise<LoginState> {
-  const supabase = await createClient();
+export async function login(state: LoginState, formData: FormData): Promise<LoginState> {
+    const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
+    const data = {
+        email: formData.get('email') as string,
+        password: formData.get('password') as string
+    }
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+    const { error } = await supabase.auth.signInWithPassword(data)
 
-  if (error) {
-    return { error: error.message };
-  }
+    if (error) {
+        return { error: error.message }
+    }
 
-  revalidatePath('/', 'layout');
-  redirect('/');
+    revalidatePath('/', 'layout')
+    redirect('/')
 }

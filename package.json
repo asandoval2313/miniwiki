@@ -17,6 +17,7 @@
         "react-dom": "19.0.0-rc-66855b96-20241106"
     },
     "devDependencies": {
+        "@radix-ui/react-select": "^2.1.6",
         "@radix-ui/react-slot": "^1.1.2",
         "@supabase/ssr": "^0.5.2",
         "@supabase/supabase-js": "^2.49.1",
@@ -27,6 +28,8 @@
         "clsx": "^2.1.1",
         "eslint": "^8",
         "eslint-config-next": "15.0.3",
+        "eslint-config-prettier": "^10.0.2",
+        "eslint-plugin-prettier": "^5.2.3",
         "lucide-react": "^0.475.0",
         "postcss": "^8",
         "prettier": "^3.4.2",
