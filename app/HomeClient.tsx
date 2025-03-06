@@ -47,7 +47,6 @@ export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
     }, [selectedWiki, supabase])
 
     const handleSearch = async (query: string) => {
-        setSearchPerformed(true)
         const lowerQuery = query.toLowerCase().trim()
 
         if (lowerQuery === '') {
@@ -64,7 +63,7 @@ export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
                     post.content.toLowerCase().includes(lowerQuery) ||
                     post.keywords.some((keyword: string) => keyword.toLowerCase().includes(lowerQuery))
             )
-
+            setSearchPerformed(true)
             setResults(filtered)
         }
     }
