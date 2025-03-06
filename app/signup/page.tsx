@@ -4,7 +4,6 @@ import { useActionState } from 'react'
 import { signup } from './actions'
 
 export default function SignUp() {
-    // ✅ Initial state for form errors
     const initialState = { error: null }
     const [state, formAction] = useActionState(signup, initialState)
 
@@ -13,10 +12,8 @@ export default function SignUp() {
             <form action={formAction} className="w-full max-w-sm space-y-6 rounded-lg bg-white p-8 shadow-lg">
                 <h2 className="text-center text-2xl font-bold text-gray-800">Sign Up</h2>
 
-                {/* Error Display */}
                 {state?.error && <p className="text-center text-sm text-red-500">{state.error}</p>}
 
-                {/* First Name */}
                 <div>
                     <label htmlFor="first_name" className="block text-sm font-medium text-gray-700">
                         First Name
@@ -31,7 +28,6 @@ export default function SignUp() {
                     />
                 </div>
 
-                {/* Last Name */}
                 <div>
                     <label htmlFor="last_name" className="block text-sm font-medium text-gray-700">
                         Last Name
@@ -46,7 +42,6 @@ export default function SignUp() {
                     />
                 </div>
 
-                {/* Email */}
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                         Email
@@ -61,7 +56,6 @@ export default function SignUp() {
                     />
                 </div>
 
-                {/* Password */}
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                         Password
@@ -76,7 +70,6 @@ export default function SignUp() {
                     />
                 </div>
 
-                {/* ✅ Submit Button */}
                 <button
                     type="submit"
                     className="w-full rounded-md bg-green-500 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -84,7 +77,6 @@ export default function SignUp() {
                     Sign Up
                 </button>
 
-                {/* Link to Sign In */}
                 <p className="mt-4 text-center text-sm text-gray-600">
                     Already have an account?{' '}
                     <a href="/login" className="text-blue-500 hover:underline">

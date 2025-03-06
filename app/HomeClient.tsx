@@ -3,6 +3,7 @@
 import { signOut } from '@/app/actions'
 import SearchBar from '@/components/SearchBar'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createClient } from '@/utils/supabase/client'
 import { LogOut, Plus } from 'lucide-react'
@@ -142,16 +143,17 @@ export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
                 {searchPerformed ? (
                     results.length > 0 ? (
                         results.map((post) => (
-                            <Button
+                            <Card
                                 key={post.id}
-                                variant="ghost"
-                                className="my-2 w-full cursor-pointer rounded-lg border p-4 text-left shadow transition hover:bg-gray-100 focus-visible:ring-2"
                                 onClick={() => handleViewPost(post.id)}
+                                className="my-2 cursor-pointer rounded-lg border p-4 shadow transition hover:bg-gray-100"
                             >
-                                <h2 className="text-xl font-semibold">{post.title}</h2>
-                                <p className="line-clamp-2 text-gray-600">{post.content}</p>
-                                <p className="mt-2 text-sm text-gray-500">Keywords: {post.keywords.join(', ')}</p>
-                            </Button>
+                                <CardContent className="p-0">
+                                    <h2 className="text-xl font-semibold">{post.title}</h2>
+                                    <p className="text-gray-600">{post.content}</p>
+                                    <p className="mt-2 text-sm text-gray-500">Keywords: {post.keywords.join(', ')}</p>
+                                </CardContent>
+                            </Card>
                         ))
                     ) : (
                         <p className="text-center text-gray-500">No results found.</p>
