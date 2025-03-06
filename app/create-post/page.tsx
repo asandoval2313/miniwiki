@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
-export default function CreatePost() {
+function CreatePostContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const wikiId = searchParams.get('wiki_id')
@@ -57,18 +57,39 @@ export default function CreatePost() {
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Post Title</label>
-                            <Input type="text" placeholder="Enter post title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Post Content</label>
-                            <Textarea placeholder="Enter post content" value={content} onChange={(e) => setContent(e.target.value)} rows={6} required />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Keywords (comma-separated)</label>
+                            <label htmlFor="post-title" className="block text-sm font-medium text-gray-700">
+                                Post Title
+                            </label>
                             <Input
+                                id="post-title"
+                                type="text"
+                                placeholder="Enter post title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="post-content" className="block text-sm font-medium text-gray-700">
+                                Post Content
+                            </label>
+                            <Textarea
+                                id="post-content"
+                                placeholder="Enter post content"
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                rows={6}
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="post-keywords" className="block text-sm font-medium text-gray-700">
+                                Keywords (comma-separated)
+                            </label>
+                            <Input
+                                id="post-keywords"
                                 type="text"
                                 placeholder="e.g., orders, checkout, bugfix"
                                 value={keywords}
@@ -89,5 +110,13 @@ export default function CreatePost() {
                 </CardContent>
             </Card>
         </div>
+    )
+}
+
+export default function CreatePost() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CreatePostContent />
+        </Suspense>
     )
 }

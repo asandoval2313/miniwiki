@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { createClient } from '@/utils/supabase/client'
 import { LogOut, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 
 interface Post {
     id: string
@@ -29,7 +29,7 @@ interface HomeClientProps {
 
 export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
     const router = useRouter()
-    const supabase = createClient()
+    const supabase = useMemo(() => createClient(), [])
     const [results, setResults] = useState<Post[]>([])
     const [searchPerformed, setSearchPerformed] = useState(false)
     const [selectedWiki, setSelectedWiki] = useState<string | null>(initialWikiId)
@@ -43,7 +43,7 @@ export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
             }
             fetchPosts()
         }
-    }, [selectedWiki])
+    }, [selectedWiki, supabase])
 
     const handleSearch = async (query: string) => {
         setSearchPerformed(true)
@@ -142,15 +142,16 @@ export default function HomeClient({ wikis, initialWikiId }: HomeClientProps) {
                 {searchPerformed ? (
                     results.length > 0 ? (
                         results.map((post) => (
-                            <div
+                            <Button
                                 key={post.id}
+                                variant="ghost"
+                                className="my-2 w-full cursor-pointer rounded-lg border p-4 text-left shadow transition hover:bg-gray-100 focus-visible:ring-2"
                                 onClick={() => handleViewPost(post.id)}
-                                className="my-2 cursor-pointer rounded-lg border p-4 shadow transition hover:bg-gray-100"
                             >
                                 <h2 className="text-xl font-semibold">{post.title}</h2>
                                 <p className="line-clamp-2 text-gray-600">{post.content}</p>
                                 <p className="mt-2 text-sm text-gray-500">Keywords: {post.keywords.join(', ')}</p>
-                            </div>
+                            </Button>
                         ))
                     ) : (
                         <p className="text-center text-gray-500">No results found.</p>
