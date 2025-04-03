@@ -1,7 +1,7 @@
 import { lstatSync, readdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 
-const DIRECTORIES_TO_CLEAN = ['node_modules', 'dist']
+const DIRECTORIES_TO_CLEAN = ['node_modules', '.next']
 const DIRECTORIES_TO_IGNORE: string[] = []
 
 function clean(directory: string, dryRun = false) {
