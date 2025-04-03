@@ -1,3 +1,14 @@
+import { SignedIn, SignedOut } from '@clerk/nextjs'
+
 export default function Home() {
-    return <div>Hello, World!</div>
+    return (
+        <>
+            <SignedIn>
+                <div>Hello, World!</div>
+            </SignedIn>
+            <SignedOut>
+                <div>Please sign in to continue.</div>
+            </SignedOut>
+        </>
+    )
 }
