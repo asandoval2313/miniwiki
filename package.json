@@ -9,7 +9,8 @@
         "lint": "next lint",
         "prettier": "prettier . --check",
         "prettier:fix": "prettier . --write",
-        "clean": "bun run ./scripts/clean.ts"
+        "clean": "bun run ./scripts/clean.ts",
+        "cspell": "bunx cspell '**'"
     },
     "dependencies": {
         "react": "^19.0.0",
@@ -28,5 +29,14 @@
         "prettier-plugin-tailwindcss": "^0.6.11",
         "tailwindcss": "^4",
         "typescript": "^5"
+    },
+    "cspell": {
+        "version": "0.2",
+        "ignorePaths": [],
+        "dictionaryDefinitions": [],
+        "dictionaries": [],
+        "words": [],
+        "ignoreWords": [],
+        "import": []
     }
 }
